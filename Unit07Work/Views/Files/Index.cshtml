@@ -1,0 +1,56 @@
+﻿
+@{
+    Layout = null;
+}
+@using Unit07Work.Models
+@model List<Files>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div>
+        @using (Ajax.BeginForm("UpLoad", null, new AjaxOptions {HttpMethod="post",OnSuccess = "success" }, new { @enctype = "multipart/form-data" }))
+        {
+            <input id="File1" type="file" name="fileBase" />
+            <input id="Submit1" type="submit" value="上传" />
+        }
+
+        <table>
+            <tr>
+                <td>编号</td>
+                <td>文件名</td>
+                <td>文件大小</td>
+                <td>下载</td>
+            </tr>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FileName</td>
+                        <td>@item.FileSize kb</td>
+                        <td><a href="/Files/DownLoad?fileName=@item.FileName">下载</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<script>
+    function success(d) {
+        if (d > 0) {
+            alert("上传成功");
+            location.href = "/Files/Show";
+        }
+        else {
+            alert("上传失败");
+        }
+    }
+</script>
